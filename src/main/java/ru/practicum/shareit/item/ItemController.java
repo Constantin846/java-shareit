@@ -30,6 +30,9 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ItemController {
     private final ItemService itemService;
+    private static final String X_SHARER_USER_ID = "X-Sharer-User-Id";
+    private static final String ITEM_ID = "item-id";
+    private static final String PATH_ITEM_ID = "/{item-id}";
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -41,23 +44,23 @@ public class ItemController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<ItemDto> findItemsOfUser(@RequestHeader("X-Sharer-User-Id") long userId) {
+    public List<ItemDto> findItemsOfUser(@RequestHeader(X_SHARER_USER_ID) long userId) {
         log.info("Request: find all items of user: {}", userId);
         return itemService.findItemsOfUser(userId);
     }
 
-    @GetMapping("/{item-id}")
+    @GetMapping(PATH_ITEM_ID)
     @ResponseStatus(HttpStatus.OK)
-    public ItemDto findById(@PathVariable("item-id") long itemId) {
+    public ItemDto findById(@PathVariable(ITEM_ID) long itemId) {
         log.info("Request: find item by id: {}", itemId);
         return itemService.findById(itemId);
     }
 
-    @PatchMapping("/{item-id}")
+    @PatchMapping(PATH_ITEM_ID)
     @ResponseStatus(HttpStatus.OK)
     public ItemDto update(@RequestBody ItemDto itemDto,
-                          @PathVariable("item-id") long itemId,
-                          @RequestHeader("X-Sharer-User-Id") long userId) {
+                          @PathVariable(ITEM_ID) long itemId,
+                          @RequestHeader(X_SHARER_USER_ID) long userId) {
         itemDto.setId(itemId);
         log.info("Request: update item: {}", itemDto);
         if (itemDto.getId() == null) {
@@ -68,10 +71,10 @@ public class ItemController {
         return itemService.update(itemDto, userId);
     }
 
-    @DeleteMapping("/{item-id}")
+    @DeleteMapping(PATH_ITEM_ID)
     @ResponseStatus(HttpStatus.OK)
-    public void delete(@PathVariable("item-id") long itemId,
-                       @RequestHeader("X-Sharer-User-Id") long userId) {
+    public void delete(@PathVariable(ITEM_ID) long itemId,
+                       @RequestHeader(X_SHARER_USER_ID) long userId) {
         log.info("Request: delete item by id: {}", itemId);
         itemService.delete(itemId, userId);
     }

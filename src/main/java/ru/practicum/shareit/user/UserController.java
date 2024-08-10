@@ -26,6 +26,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
+    private static final String USER_ID = "user-id";
+    private static final String PATH_USER_ID = "/{user-id}";
 
     @PostMapping
     public UserDto create(@Valid @RequestBody UserDto userDto) {
@@ -39,14 +41,14 @@ public class UserController {
         return userService.findAll();
     }
 
-    @GetMapping("/{user-id}")
-    public UserDto findById(@PathVariable("user-id") long userId) {
+    @GetMapping(PATH_USER_ID)
+    public UserDto findById(@PathVariable(USER_ID) long userId) {
         log.info("Request: find user by id: {}", userId);
         return userService.findById(userId);
     }
 
-    @PatchMapping("/{user-id}")
-    public UserDto update(@PathVariable("user-id") long userId,
+    @PatchMapping(PATH_USER_ID)
+    public UserDto update(@PathVariable(USER_ID) long userId,
                           @RequestBody UserDto userDto) {
         userDto.setId(userId);
         log.info("Request: update user: {}", userDto);
@@ -58,8 +60,8 @@ public class UserController {
         return userService.update(userDto);
     }
 
-    @DeleteMapping("/{user-id}")
-    public void delete(@PathVariable("user-id") long userId) {
+    @DeleteMapping(PATH_USER_ID)
+    public void delete(@PathVariable(USER_ID) long userId) {
         log.info("Request: delete user by id: {}", userId);
         userService.delete(userId);
     }

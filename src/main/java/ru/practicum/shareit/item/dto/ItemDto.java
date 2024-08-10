@@ -1,10 +1,10 @@
 package ru.practicum.shareit.item.dto;
 
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
+import ru.practicum.shareit.item.dto.validation.BooleanValue;
 
 /**
  * TODO Sprint add-controllers.
@@ -17,7 +17,7 @@ public class ItemDto {
     String name;
     @NotBlank(message = "Item's description must not be blank")
     String description;
-    @NotNull(message = "Item's available must be true or false")
+    @BooleanValue(message = "Item's available must be true or false")
     String available;
     Long ownerId;
 }

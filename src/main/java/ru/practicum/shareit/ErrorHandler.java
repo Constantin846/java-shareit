@@ -2,6 +2,7 @@ package ru.practicum.shareit;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -43,7 +44,10 @@ public class ErrorHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public Map<String, String> handlerValidException(final MethodArgumentNotValidException e) {
-        return Map.of("error", e.getMessage());
+        FieldError fieldError = e.getFieldError();
+        String message = fieldError != null ? fieldError.getDefaultMessage() : "Internal server error";
+        message = message != null ? message : "Internal server error";
+        return Map.of("error", message);
     }
 
     @ExceptionHandler
