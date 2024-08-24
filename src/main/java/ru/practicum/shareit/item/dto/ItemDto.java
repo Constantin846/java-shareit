@@ -7,7 +7,7 @@ import lombok.experimental.FieldDefaults;
 import ru.practicum.shareit.item.dto.validation.BooleanValue;
 
 /**
- * TODO Sprint add-controllers.
+ * DTO class for item
  */
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)

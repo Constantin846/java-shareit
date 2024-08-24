@@ -5,7 +5,7 @@ import lombok.Data;
 import lombok.experimental.FieldDefaults;
 
 /**
- * TODO Sprint add-controllers.
+ * The class of user
  */
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)

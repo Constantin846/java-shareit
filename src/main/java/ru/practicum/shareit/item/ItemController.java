@@ -22,7 +22,7 @@ import ru.practicum.shareit.item.service.ItemService;
 import java.util.List;
 
 /**
- * TODO Sprint add-controllers.
+ * Controller for items
  */
 @Slf4j
 @RestController

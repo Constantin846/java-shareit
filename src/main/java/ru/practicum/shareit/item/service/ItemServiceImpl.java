@@ -16,6 +16,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class ItemServiceImpl implements ItemService {
+    private static final String USER_WAS_NOT_FOUND_BY_ID = "User was not found by id: %d";
     private final ItemRepository itemRepository;
     private final UserRepository userRepository;
 
@@ -27,7 +28,7 @@ public class ItemServiceImpl implements ItemService {
             Item createdItem = itemRepository.create(item);
             return findById(createdItem.getId());
         } else {
-            String message = String.format("An user was not found by id: %d", userId);
+            String message = String.format(USER_WAS_NOT_FOUND_BY_ID, userId);
             log.warn(message);
             throw new NotFoundException(message);
         }
@@ -40,7 +41,7 @@ public class ItemServiceImpl implements ItemService {
                     .map(ItemDtoMapper::toItemDto)
                     .toList();
         } else {
-            String message = String.format("An user was not found by id: %d", userId);
+            String message = String.format(USER_WAS_NOT_FOUND_BY_ID, userId);
             log.warn(message);
             throw new NotFoundException(message);
         }
@@ -58,7 +59,7 @@ public class ItemServiceImpl implements ItemService {
             Item item = itemRepository.update(ItemDtoMapper.toItem(itemDto), userId);
             return findById(item.getId());
         } else {
-            String message = String.format("An user was not found by id: %d", userId);
+            String message = String.format(USER_WAS_NOT_FOUND_BY_ID, userId);
             log.warn(message);
             throw new NotFoundException(message);
         }
@@ -69,7 +70,7 @@ public class ItemServiceImpl implements ItemService {
         if (userRepository.checkUserExists(userId)) {
             itemRepository.delete(itemId, userId);
         } else {
-            String message = String.format("An user was not found by id: %d", userId);
+            String message = String.format(USER_WAS_NOT_FOUND_BY_ID, userId);
             log.warn(message);
             throw new NotFoundException(message);
         }
