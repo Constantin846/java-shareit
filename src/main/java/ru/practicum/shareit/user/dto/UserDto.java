@@ -13,9 +13,11 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class UserDto {
     Long id;
+
     @NotBlank(message = "User's email must not be blank")
     @Email(message = "Invalid user's email")
     String email;
+
     @NotBlank(message = "User's name must not be blank")
     String name;
 }

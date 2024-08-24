@@ -23,7 +23,8 @@ public class ErrorHandler {
     }
 
     @ExceptionHandler
-    @ResponseStatus(HttpStatus.NOT_ACCEPTABLE)
+    //@ResponseStatus(HttpStatus.NOT_ACCEPTABLE)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
     public Map<String, String> handlerNotAccessException(final NotAccessException e) {
         return Map.of(ERROR, e.getMessage());
     }

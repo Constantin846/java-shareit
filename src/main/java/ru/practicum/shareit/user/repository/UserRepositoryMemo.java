@@ -22,7 +22,7 @@ public class UserRepositoryMemo implements UserRepository {
     @Override
     public User create(User user) {
         if (emailOfUsers.containsKey(user.getEmail())) {
-            String message = String.format("This email has been occupied: %s", user);
+            String message = String.format("User email has been occupied: %s", user);
             log.warn(message);
             throw new ConflictException(message);
         }
@@ -58,7 +58,7 @@ public class UserRepositoryMemo implements UserRepository {
 
         if (users.containsKey(user.getId())) {
             if (user.getEmail() != null && emailOfUsers.containsKey(user.getEmail())) {
-                String message = String.format("This email has been occupied: %s", user);
+                String message = String.format("User email has been occupied: %s", user);
                 log.warn(message);
                 throw new ConflictException(message);
             }
