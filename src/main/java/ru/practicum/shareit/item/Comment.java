@@ -13,31 +13,24 @@ import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.FieldDefaults;
 
-/**
- * The class of things that can be shared between users
- */
-
 @Entity
-@Table(name = "items", schema = "public")
+@Table(name = "comments", schema = "public")
 @Getter
 @Setter
 @EqualsAndHashCode(of = "id")
 @ToString
-@FieldDefaults(level = AccessLevel.PROTECTED) // todo private
-public class Item {
+@FieldDefaults(level = AccessLevel.PROTECTED)
+public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    @Column(name = "name", nullable = false, length = 255)
-    String name;
+    @Column(name = "text", nullable = false, length = 255)
+    String text;
 
-    @Column(name = "description", nullable = false)
-    String description;
+    @Column(name = "item_id", nullable = false)
+    Long itemId;
 
-    @Column(name = "is_available", nullable = false)
-    boolean available;
-
-    @Column(name = "owner_id")
-    Long ownerId;
+    @Column(name = "author_id")
+    Long authorId;
 }

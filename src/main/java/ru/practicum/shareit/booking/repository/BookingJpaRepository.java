@@ -7,6 +7,7 @@ import ru.practicum.shareit.booking.BookingStatus;
 
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Optional;
 
 public interface BookingJpaRepository extends JpaRepository<Booking, Long> {
     String SELECT_BY_BOOKER_ID = """
@@ -74,4 +75,5 @@ public interface BookingJpaRepository extends JpaRepository<Booking, Long> {
             ORDER_BY_START_DESC)
     List<Booking> findByOwnerIdAndStatus(long ownerId, BookingStatus status);
 
+    Optional<Booking> findPastApprovedByBookerIdAndItemId(long bookerId, long itemId);
 }

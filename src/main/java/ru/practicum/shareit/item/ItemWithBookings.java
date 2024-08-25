@@ -1,33 +1,35 @@
 package ru.practicum.shareit.item;
 
-import jakarta.persistence.Entity;
+import jakarta.persistence.Column;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.FieldDefaults;
+import ru.practicum.shareit.booking.Booking;
 
-import java.time.Instant;
 
 
-@Entity
 @Getter
 @Setter
 @ToString
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @NoArgsConstructor
-public class ItemWithDates extends Item {
-    Instant lastBookingEnd;
-    Instant nextBookingStart;
+public class ItemWithBookings extends Item { // todo delete
+    @Column(name = "last_booking")
+    Booking lastBooking;
 
-    public ItemWithDates(Item item, Instant lastBookingEnd, Instant nextBookingStart) {
+    @Column(name = "next_booking")
+    Booking nextBooking;
+
+    public ItemWithBookings(Item item, Booking lastBooking, Booking nextBooking) {
         this.id = item.getId();
         this.name = item.getName();
         this.description = item.getDescription();
         this.available = item.isAvailable();
         this.ownerId = item.getOwnerId();
-        this.lastBookingEnd = lastBookingEnd;
-        this.nextBookingStart = nextBookingStart;
+        this.lastBooking = lastBooking;
+        this.nextBooking = nextBooking;
     }
 }

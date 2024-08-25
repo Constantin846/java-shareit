@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import ru.practicum.shareit.exceptions.ValidationException;
+import ru.practicum.shareit.item.dto.CommentDto;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.service.ItemService;
 
@@ -87,5 +88,16 @@ public class ItemController {
             return List.of();
         }
         return itemService.searchByText(text);
+    }
+
+    @PostMapping(PATH_ITEM_ID + "/comment")
+    @ResponseStatus(HttpStatus.CREATED)
+    public CommentDto createComment(@Valid @RequestBody CommentDto commentDto,
+                                    @PathVariable(ITEM_ID) long itemId,
+                                    @RequestHeader(X_SHARER_USER_ID) long userId) {
+        commentDto.setItemId(itemId);
+        commentDto.setAuthorId(userId);
+        log.info("Request: create comment: {}", commentDto);
+        return itemService.createComment(commentDto);
     }
 }

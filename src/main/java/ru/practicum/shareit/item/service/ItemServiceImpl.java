@@ -3,18 +3,21 @@ package ru.practicum.shareit.item.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import ru.practicum.shareit.booking.Booking;
+import ru.practicum.shareit.booking.repository.BookingJpaRepository;
 import ru.practicum.shareit.exceptions.NotAccessException;
 import ru.practicum.shareit.exceptions.NotFoundException;
 import ru.practicum.shareit.exceptions.ValidationException;
+import ru.practicum.shareit.item.Comment;
 import ru.practicum.shareit.item.Item;
-import ru.practicum.shareit.item.ItemWithDates;
+import ru.practicum.shareit.item.dto.CommentDto;
+import ru.practicum.shareit.item.dto.CommentDtoMapper;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.dto.ItemDtoMapper;
+import ru.practicum.shareit.item.repository.CommentJpaRepository;
 import ru.practicum.shareit.item.repository.ItemJpaRepository;
 import ru.practicum.shareit.user.repository.UserJpaRepository;
 
-import java.sql.Timestamp;
-import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,6 +28,8 @@ public class ItemServiceImpl implements ItemService {
     private static final String USER_WAS_NOT_FOUND_BY_ID = "User was not found by id: %d";
     private final ItemJpaRepository itemRepository;
     private final UserJpaRepository userRepository;
+    private final CommentJpaRepository commentRepository;
+    private final BookingJpaRepository bookingRepository;
 
     @Override
     public ItemDto create(ItemDto itemDto, long userId) {
@@ -43,8 +48,7 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public List<ItemDto> findItemsOfUser(long userId) {
         if (userRepository.existsById(userId)) {
-            List<ItemWithDates> items = itemRepository.findByOwnerId(userId, Timestamp.from(Instant.now()));
-            return itemRepository.findByOwnerId(userId, Timestamp.from(Instant.now())).stream()
+            return itemRepository.findByOwnerId(userId).stream()
                     .map(ItemDtoMapper::toItemDto)
                     .toList();
         } else {
@@ -117,6 +121,28 @@ public class ItemServiceImpl implements ItemService {
         return items.stream()
                 .map(ItemDtoMapper::toItemDto)
                 .toList();
+    }
+
+    @Override
+    public CommentDto createComment(CommentDto commentDto) {
+        Comment comment = CommentDtoMapper.toComment(commentDto);
+        Optional<Booking> booking =
+                bookingRepository.findPastApprovedByBookerIdAndItemId(comment.getAuthorId(), comment.getItemId());
+        if (booking.isEmpty()) {
+            String message = String.format("User=%d has not gotten this item=%d",
+                    comment.getAuthorId(), comment.getItemId());
+            log.warn(message);
+            throw new NotAccessException(message);
+        }
+        Comment savedComment = commentRepository.save(comment);
+
+        Optional<Comment> commentOp = commentRepository.findById(savedComment.getId());
+        savedComment = commentOp.orElseThrow(() -> {
+            String message = String.format("Comment has not been saved: %s", comment);
+            log.warn(message);
+            return new NotFoundException(message);
+        });
+        return CommentDtoMapper.toCommentDto(savedComment);
     }
 
     private boolean checkUserAccess(long itemId, long userId) {
