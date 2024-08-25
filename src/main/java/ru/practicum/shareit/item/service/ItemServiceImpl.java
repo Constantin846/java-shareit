@@ -6,9 +6,9 @@ import org.springframework.stereotype.Service;
 import ru.practicum.shareit.exceptions.NotAccessException;
 import ru.practicum.shareit.exceptions.NotFoundException;
 import ru.practicum.shareit.exceptions.ValidationException;
+import ru.practicum.shareit.item.Item;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.dto.ItemDtoMapper;
-import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.item.repository.ItemJpaRepository;
 import ru.practicum.shareit.user.repository.UserJpaRepository;
 
@@ -52,12 +52,7 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public ItemDto findById(long itemId) {
-        Optional<Item> itemOp = itemRepository.findById(itemId);
-        Item item = itemOp.orElseThrow(() -> {
-            String message = String.format("Item was not found by id: %d", itemId);
-            log.warn(message);
-            return new NotFoundException(message);
-        });
+        Item item = getItemById(itemId);
         return ItemDtoMapper.toItemDto(item);
     }
 
@@ -71,12 +66,7 @@ public class ItemServiceImpl implements ItemService {
             throw new ValidationException(message);
         }
 
-        Optional<Item> itemOp = itemRepository.findById(item.getId());
-        Item oldItem = itemOp.orElseThrow(() -> {
-            String message = String.format("Item does not exist: %s", item);
-            log.warn(message);
-            return new NotFoundException(message);
-        });
+        Item oldItem = getItemById(item.getId());
         if (oldItem.getOwnerId() != userId) {
             String message = String.format("Not access to item: %s", item);
             log.warn(message);
@@ -133,5 +123,14 @@ public class ItemServiceImpl implements ItemService {
             return new NotFoundException(message);
         });
         return oldItem.getOwnerId() == userId;
+    }
+
+    private Item getItemById(long itemId) {
+        Optional<Item> itemOp = itemRepository.findById(itemId);
+        return itemOp.orElseThrow(() -> {
+            String message = String.format("Item was not found by id: %d", itemId);
+            log.warn(message);
+            return new NotFoundException(message);
+        });
     }
 }

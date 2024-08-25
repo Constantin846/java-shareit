@@ -37,7 +37,7 @@ public class ItemController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ItemDto create(@Valid @RequestBody ItemDto itemDto,
-                          @RequestHeader("X-Sharer-User-Id") long userId) {
+                          @RequestHeader(X_SHARER_USER_ID) long userId) {
         log.info("Request: create item: {}", itemDto);
         return itemService.create(itemDto, userId);
     }
@@ -83,6 +83,9 @@ public class ItemController {
     @ResponseStatus(HttpStatus.OK)
     public List<ItemDto> search(@RequestParam("text") String text) {
         log.info("Request: search items by text: {}", text);
+        if (text.isBlank()) {
+            return List.of();
+        }
         return itemService.searchByText(text);
     }
 }

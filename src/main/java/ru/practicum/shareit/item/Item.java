@@ -1,4 +1,4 @@
-package ru.practicum.shareit.item.model;
+package ru.practicum.shareit.item;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -35,7 +35,7 @@ public class Item {
     @Column(name = "description", nullable = false)
     String description;
 
-    @Column(name = "available", nullable = false)
+    @Column(name = "is_available", nullable = false)
     boolean available;
 
     @Column(name = "owner_id")

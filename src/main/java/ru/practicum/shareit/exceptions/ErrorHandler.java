@@ -24,13 +24,14 @@ public class ErrorHandler {
 
     @ExceptionHandler
     //@ResponseStatus(HttpStatus.NOT_ACCEPTABLE)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     public Map<String, String> handlerNotAccessException(final NotAccessException e) {
         return Map.of(ERROR, e.getMessage());
     }
 
     @ExceptionHandler
-    @ResponseStatus(HttpStatus.CONFLICT)
+    //@ResponseStatus(HttpStatus.CONFLICT)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     public Map<String, String> handlerConflictException(final ConflictException e) {
         return Map.of(ERROR, e.getMessage());
     }
