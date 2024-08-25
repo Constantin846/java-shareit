@@ -7,11 +7,14 @@ import ru.practicum.shareit.exceptions.NotAccessException;
 import ru.practicum.shareit.exceptions.NotFoundException;
 import ru.practicum.shareit.exceptions.ValidationException;
 import ru.practicum.shareit.item.Item;
+import ru.practicum.shareit.item.ItemWithDates;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.dto.ItemDtoMapper;
 import ru.practicum.shareit.item.repository.ItemJpaRepository;
 import ru.practicum.shareit.user.repository.UserJpaRepository;
 
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
@@ -40,7 +43,8 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public List<ItemDto> findItemsOfUser(long userId) {
         if (userRepository.existsById(userId)) {
-            return itemRepository.findByOwnerId(userId).stream()
+            List<ItemWithDates> items = itemRepository.findByOwnerId(userId, Timestamp.from(Instant.now()));
+            return itemRepository.findByOwnerId(userId, Timestamp.from(Instant.now())).stream()
                     .map(ItemDtoMapper::toItemDto)
                     .toList();
         } else {
