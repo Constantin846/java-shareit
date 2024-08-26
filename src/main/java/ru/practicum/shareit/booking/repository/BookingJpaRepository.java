@@ -6,6 +6,7 @@ import ru.practicum.shareit.booking.Booking;
 import ru.practicum.shareit.booking.BookingStatus;
 
 import java.sql.Timestamp;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
@@ -76,4 +77,13 @@ public interface BookingJpaRepository extends JpaRepository<Booking, Long> {
     List<Booking> findByOwnerIdAndStatus(long ownerId, BookingStatus status);
 
     Optional<Booking> findPastApprovedByBookerIdAndItemId(long bookerId, long itemId);
+
+    @Query("""
+            select b
+            from Booking as b
+            join Item as i on b.item = i
+            where i.id = ?1
+            order by b.start asc
+            """)
+    LinkedList<Booking> findApprovedByItemIdSortStartAsc(long itemId);
 }

@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import ru.practicum.shareit.exceptions.ValidationException;
 import ru.practicum.shareit.item.dto.CommentDto;
+import ru.practicum.shareit.item.dto.ItemBookingCommentDto;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.service.ItemService;
 
@@ -52,9 +53,9 @@ public class ItemController {
 
     @GetMapping(PATH_ITEM_ID)
     @ResponseStatus(HttpStatus.OK)
-    public ItemDto findById(@PathVariable(ITEM_ID) long itemId) {
+    public ItemBookingCommentDto findById(@PathVariable(ITEM_ID) long itemId) {
         log.info("Request: find item by id: {}", itemId);
-        return itemService.findById(itemId);
+        return itemService.findItemBookingCommentsById(itemId);
     }
 
     @PatchMapping(PATH_ITEM_ID)
@@ -96,8 +97,7 @@ public class ItemController {
                                     @PathVariable(ITEM_ID) long itemId,
                                     @RequestHeader(X_SHARER_USER_ID) long userId) {
         commentDto.setItemId(itemId);
-        commentDto.setAuthorId(userId);
-        log.info("Request: create comment: {}", commentDto);
-        return itemService.createComment(commentDto);
+        log.info("Request: create comment={} by user={}", commentDto, userId);
+        return itemService.createComment(commentDto, userId);
     }
 }

@@ -18,10 +18,10 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.FieldDefaults;
-import ru.practicum.shareit.item.Item;
+import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.user.User;
 
-import java.time.Instant;
+import java.time.LocalDateTime;
 
 /**
  * TODO Sprint add-bookings.
@@ -40,14 +40,14 @@ public class Booking {
     Long id;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "item_id",nullable = false)
+    @JoinColumn(name = "item_id", nullable = false)
     Item item;
 
     @Column(name = "start_date", nullable = false)
-    Instant start;
+    LocalDateTime start;
 
     @Column(name = "end_date", nullable = false)
-    Instant end;
+    LocalDateTime end;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "booker_id", nullable = false)

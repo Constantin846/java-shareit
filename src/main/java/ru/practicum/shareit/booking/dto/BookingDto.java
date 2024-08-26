@@ -1,18 +1,16 @@
 package ru.practicum.shareit.booking.dto;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.FieldDefaults;
-import ru.practicum.shareit.adapters.InstantSerializer;
 import ru.practicum.shareit.booking.BookingStatus;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.user.dto.UserDto;
 
-import java.time.Instant;
+import java.time.LocalDateTime;
 
 /**
  * TODO Sprint add-bookings.
@@ -28,11 +26,11 @@ public class BookingDto {
 
     ItemDto item;
 
-    @JsonSerialize(using = InstantSerializer.class)
-    Instant start;
+    //@JsonSerialize(using = InstantSerializer.class)
+    LocalDateTime start;
 
-    @JsonSerialize(using = InstantSerializer.class)
-    Instant end;
+    //@JsonSerialize(using = InstantSerializer.class)
+    LocalDateTime end;
 
     UserDto booker;
 

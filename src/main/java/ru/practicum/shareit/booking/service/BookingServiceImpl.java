@@ -14,13 +14,13 @@ import ru.practicum.shareit.booking.repository.BookingJpaRepository;
 import ru.practicum.shareit.exceptions.ConflictException;
 import ru.practicum.shareit.exceptions.NotAccessException;
 import ru.practicum.shareit.exceptions.NotFoundException;
-import ru.practicum.shareit.item.Item;
+import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.item.repository.ItemJpaRepository;
 import ru.practicum.shareit.user.User;
 import ru.practicum.shareit.user.repository.UserJpaRepository;
 
 import java.sql.Timestamp;
-import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -112,17 +112,17 @@ public class BookingServiceImpl implements BookingService {
             }
             case CURRENT -> {
                 return bookingDtoMapper.toBookingDto(
-                        bookingRepository.findCurrentByBookerId(bookerId, Timestamp.from(Instant.now()))
+                        bookingRepository.findCurrentByBookerId(bookerId, Timestamp.valueOf(LocalDateTime.now()))
                 );
             }
             case PAST -> {
                 return bookingDtoMapper.toBookingDto(
-                        bookingRepository.findPastByBookerId(bookerId, Timestamp.from(Instant.now()))
+                        bookingRepository.findPastByBookerId(bookerId, Timestamp.valueOf(LocalDateTime.now()))
                 );
             }
             case FUTURE -> {
                 return bookingDtoMapper.toBookingDto(
-                        bookingRepository.findFutureByBookerId(bookerId, Timestamp.from(Instant.now()))
+                        bookingRepository.findFutureByBookerId(bookerId, Timestamp.valueOf(LocalDateTime.now()))
                 );
             }
             case WAITING -> {
@@ -151,17 +151,17 @@ public class BookingServiceImpl implements BookingService {
             }
             case CURRENT -> {
                 return bookingDtoMapper.toBookingDto(
-                        bookingRepository.findCurrentByOwnerId(ownerId, Timestamp.from(Instant.now()))
+                        bookingRepository.findCurrentByOwnerId(ownerId, Timestamp.valueOf(LocalDateTime.now()))
                 );
             }
             case PAST -> {
                 return bookingDtoMapper.toBookingDto(
-                        bookingRepository.findPastByOwnerId(ownerId, Timestamp.from(Instant.now()))
+                        bookingRepository.findPastByOwnerId(ownerId, Timestamp.valueOf(LocalDateTime.now()))
                 );
             }
             case FUTURE -> {
                 return bookingDtoMapper.toBookingDto(
-                        bookingRepository.findFutureByOwnerId(ownerId, Timestamp.from(Instant.now()))
+                        bookingRepository.findFutureByOwnerId(ownerId, Timestamp.valueOf(LocalDateTime.now()))
                 );
             }
             case WAITING -> {

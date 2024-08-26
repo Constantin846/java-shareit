@@ -15,5 +15,7 @@ public class CommentDto {
 
     Long itemId;
 
-    Long authorId;
+    String authorName;
+
+    boolean created;
 }

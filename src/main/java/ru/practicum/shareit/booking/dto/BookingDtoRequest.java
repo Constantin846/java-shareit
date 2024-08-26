@@ -1,6 +1,5 @@
 package ru.practicum.shareit.booking.dto;
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotNull;
@@ -10,9 +9,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.FieldDefaults;
-import ru.practicum.shareit.adapters.InstantDeserializer;
 
-import java.time.Instant;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -24,12 +22,10 @@ public class BookingDtoRequest {
     Long itemId;
 
     @NotNull
-    @JsonDeserialize(using = InstantDeserializer.class)
     @FutureOrPresent(message = "Start of booking must not be in past")
-    Instant start;
+    LocalDateTime start;
 
     @NotNull
-    @JsonDeserialize(using = InstantDeserializer.class)
     @Future(message = "End of booking must be in future")
-    Instant end;
+    LocalDateTime end;
 }

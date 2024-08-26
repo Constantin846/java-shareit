@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.practicum.shareit.booking.dto.BookingDto;
 import ru.practicum.shareit.booking.dto.BookingDtoRequest;
 import ru.practicum.shareit.booking.service.BookingService;
+import ru.practicum.shareit.exceptions.NotFoundException;
 
 import java.util.List;
 
@@ -83,6 +84,13 @@ public class BookingController {
             @RequestHeader(X_SHARER_USER_ID) long userId) {
         log.info("Request: find booking with state {} by booker={}", state, userId);
         BookingState bookingState = BookingState.valueOf(state);
-        return bookingService.findByOwner(bookingState, userId);
+        List<BookingDto> bookings = bookingService.findByOwner(bookingState, userId);
+
+        if (bookings.isEmpty()) {
+            String message = String.format("Nothing found by user id: %s", userId);
+            log.warn(message);
+            throw new NotFoundException(message);
+        }
+        return bookings;
     }
 }

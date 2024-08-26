@@ -10,7 +10,7 @@ import ru.practicum.shareit.item.dto.validation.BooleanValue;
  * DTO class for item
  */
 @Data
-@FieldDefaults(level = AccessLevel.PRIVATE)
+@FieldDefaults(level = AccessLevel.PROTECTED)
 public class ItemDto {
     Long id;
 
