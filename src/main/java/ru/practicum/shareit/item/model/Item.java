@@ -18,7 +18,7 @@ import lombok.experimental.FieldDefaults;
  */
 
 @Entity
-@Table(name = "items", schema = "public")
+@Table(name = "items")
 @Getter
 @Setter
 @EqualsAndHashCode(of = "id")

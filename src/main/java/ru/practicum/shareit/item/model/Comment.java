@@ -17,7 +17,7 @@ import lombok.experimental.FieldDefaults;
 import ru.practicum.shareit.user.User;
 
 @Entity
-@Table(name = "comments", schema = "public")
+@Table(name = "comments")
 @Getter
 @Setter
 @EqualsAndHashCode(of = "id")
