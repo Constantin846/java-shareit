@@ -3,6 +3,7 @@ package ru.practicum.shareit.item.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.shareit.booking.Booking;
 import ru.practicum.shareit.booking.dto.BookingDtoMapper;
 import ru.practicum.shareit.booking.repository.BookingJpaRepository;
@@ -31,6 +32,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class ItemServiceImpl implements ItemService {
     private static final String USER_WAS_NOT_FOUND_BY_ID = "User was not found by id: %d";
     private final ItemJpaRepository itemRepository;
@@ -40,6 +42,7 @@ public class ItemServiceImpl implements ItemService {
     private final BookingDtoMapper bookingDtoMapper;
 
     @Override
+    @Transactional
     public ItemDto create(ItemDto itemDto, long userId) {
         if (userRepository.existsById(userId)) {
             Item item = ItemDtoMapper.toItem(itemDto);
@@ -81,6 +84,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
+    @Transactional
     public ItemDto update(ItemDto itemDto, long userId) {
         Item item = ItemDtoMapper.toItem(itemDto);
 
@@ -116,6 +120,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
+    @Transactional
     public void delete(long itemId, long userId) {
         if (userRepository.existsById(userId)) {
             if (!checkUserAccess(itemId, userId)) {
@@ -140,6 +145,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
+    @Transactional
     public CommentDto createComment(CommentDto commentDto, long userId) {
         Comment comment = CommentDtoMapper.toComment(commentDto);
         Optional<User> userOp = userRepository.findById(userId);

@@ -4,6 +4,7 @@ import jakarta.validation.ValidationException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.shareit.booking.Booking;
 import ru.practicum.shareit.booking.BookingState;
 import ru.practicum.shareit.booking.BookingStatus;
@@ -27,6 +28,7 @@ import java.util.Optional;
 @Slf4j
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class BookingServiceImpl implements BookingService {
     private final BookingJpaRepository bookingRepository;
     private final ItemJpaRepository itemRepository;
@@ -34,6 +36,7 @@ public class BookingServiceImpl implements BookingService {
     private final BookingDtoMapper bookingDtoMapper;
 
     @Override
+    @Transactional
     public BookingDto create(BookingDtoRequest bookingDto, long bookerId) {
         Booking booking = bookingDtoMapper.toBooking(bookingDto);
 
@@ -88,6 +91,7 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
+    @Transactional
     public BookingDto setStatus(long bookingId, BookingStatus status, long userId) {
         Booking booking = getBookingById(bookingId);
 
