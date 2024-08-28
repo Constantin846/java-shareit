@@ -158,11 +158,6 @@ public class ItemServiceImpl implements ItemService {
             log.warn(message);
             return new NotAccessException(message);
         });
-        LocalDateTime now = LocalDateTime.now();
-        LocalDateTime start = booking.getStart();
-        LocalDateTime end = booking.getEnd();
-
-        System.out.println("\n" + start + "\n" + now + "\n" + end + "\n");
 
         if (!booking.getEnd().isBefore(LocalDateTime.now())) {
             String message = String.format("User=%d has not returned this item=%d",
