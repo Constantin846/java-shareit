@@ -2,7 +2,6 @@ package ru.practicum.shareit.user.repository;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Repository;
 import ru.practicum.shareit.exceptions.ConflictException;
 import ru.practicum.shareit.exceptions.NotFoundException;
 import ru.practicum.shareit.exceptions.ValidationException;
@@ -13,7 +12,6 @@ import java.util.List;
 import java.util.Map;
 
 @Slf4j
-@Repository
 @RequiredArgsConstructor
 public class UserRepositoryMemo implements UserRepository {
     private final Map<Long, User> users;
