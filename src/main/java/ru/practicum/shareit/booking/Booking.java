@@ -13,9 +13,8 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
+import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.FieldDefaults;
 import ru.practicum.shareit.item.model.Item;
@@ -29,10 +28,9 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "bookings")
-@Getter
-@Setter
+@Data
 @EqualsAndHashCode(of = "id")
-@ToString
+@ToString(exclude = {"item", "booker"})
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Booking {
     @Id
