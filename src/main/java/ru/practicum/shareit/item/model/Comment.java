@@ -5,35 +5,34 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import lombok.experimental.FieldDefaults;
-
-/**
- * The class of things that can be shared between users
- */
+import ru.practicum.shareit.user.User;
 
 @Entity
-@Table(name = "items")
+@Table(name = "comments")
 @Data
 @EqualsAndHashCode(of = "id")
-@FieldDefaults(level = AccessLevel.PRIVATE)
-public class Item {
+@ToString(exclude = "author")
+@FieldDefaults(level = AccessLevel.PROTECTED)
+public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    @Column(name = "name", nullable = false, length = 255)
-    String name;
+    @Column(name = "text", nullable = false)
+    String text;
 
-    @Column(name = "description", nullable = false)
-    String description;
+    @Column(name = "item_id", nullable = false)
+    Long itemId;
 
-    @Column(name = "is_available", nullable = false)
-    boolean available;
-
-    @Column(name = "owner_id")
-    Long ownerId;
+    @ManyToOne
+    @JoinColumn(name = "author_id")
+    User author;
 }

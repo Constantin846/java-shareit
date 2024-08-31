@@ -4,6 +4,7 @@ import ru.practicum.shareit.user.User;
 
 import java.util.List;
 
+@Deprecated
 public interface UserRepository {
     User create(User user);
 

@@ -2,7 +2,6 @@ package ru.practicum.shareit.user.repository;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Repository;
 import ru.practicum.shareit.exceptions.ConflictException;
 import ru.practicum.shareit.exceptions.NotFoundException;
 import ru.practicum.shareit.exceptions.ValidationException;
@@ -12,8 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+@Deprecated
 @Slf4j
-@Repository
 @RequiredArgsConstructor
 public class UserRepositoryMemo implements UserRepository {
     private final Map<Long, User> users;
@@ -22,7 +21,7 @@ public class UserRepositoryMemo implements UserRepository {
     @Override
     public User create(User user) {
         if (emailOfUsers.containsKey(user.getEmail())) {
-            String message = String.format("This email has been occupied: %s", user);
+            String message = String.format("User email has been occupied: %s", user);
             log.warn(message);
             throw new ConflictException(message);
         }
@@ -58,7 +57,7 @@ public class UserRepositoryMemo implements UserRepository {
 
         if (users.containsKey(user.getId())) {
             if (user.getEmail() != null && emailOfUsers.containsKey(user.getEmail())) {
-                String message = String.format("This email has been occupied: %s", user);
+                String message = String.format("User email has been occupied: %s", user);
                 log.warn(message);
                 throw new ConflictException(message);
             }
