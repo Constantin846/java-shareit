@@ -4,6 +4,7 @@ import ru.practicum.shareit.item.model.Item;
 
 import java.util.List;
 
+@Deprecated
 public interface ItemRepository {
     Item create(Item item);
 

@@ -2,7 +2,6 @@ package ru.practicum.shareit.item.repository;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Repository;
 import ru.practicum.shareit.exceptions.NotAccessException;
 import ru.practicum.shareit.exceptions.NotFoundException;
 import ru.practicum.shareit.exceptions.ValidationException;
@@ -12,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 @Slf4j
-@Repository
+@Deprecated
 @RequiredArgsConstructor
 public class ItemRepositoryMemo implements ItemRepository {
     private final Map<Long, Item> items;

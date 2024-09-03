@@ -1,16 +1,7 @@
 package ru.practicum.shareit.booking.dto;
 
-import org.springframework.context.annotation.Primary;
-import org.springframework.stereotype.Component;
-import ru.practicum.shareit.booking.Booking;
-import ru.practicum.shareit.item.dto.ItemDtoMapper;
-import ru.practicum.shareit.user.dto.UserDtoMapper;
-
-import java.util.List;
-
-@Component
-@Primary
-public class BookingDtoMapperMyImpl implements BookingDtoMapper {
+@Deprecated
+public class BookingDtoMapperMyImpl {} /*implements BookingDtoMapper {
     @Override
     public BookingDto toBookingDto(Booking booking) {
         BookingDto bookingDto = new BookingDto();
@@ -56,4 +47,4 @@ public class BookingDtoMapperMyImpl implements BookingDtoMapper {
                 .map(this::toBooking)
                 .toList();
     }
-}
+}*/
