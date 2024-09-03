@@ -20,19 +20,18 @@ import java.util.Optional;
 @Transactional(readOnly = true)
 public class UserServiceImpl implements UserService {
     private final UserJpaRepository userRepository;
+    private final UserDtoMapper userDtoMapper;
 
     @Override
     @Transactional
     public UserDto create(UserDto userDto) {
-        User user = userRepository.save(UserDtoMapper.toUser(userDto));
+        User user = userRepository.save(userDtoMapper.toUser(userDto));
         return findById(user.getId());
     }
 
     @Override
     public List<UserDto> findAll() {
-        return userRepository.findAll().stream()
-                .map(UserDtoMapper::toUserDto)
-                .toList();
+        return userDtoMapper.toUserDto(userRepository.findAll());
     }
 
     @Override
@@ -43,13 +42,13 @@ public class UserServiceImpl implements UserService {
             log.warn(message);
             return new NotFoundException(message);
         });
-        return UserDtoMapper.toUserDto(user);
+        return userDtoMapper.toUserDto(user);
     }
 
     @Override
     @Transactional
     public UserDto update(UserDto userDto) {
-        User user = UserDtoMapper.toUser(userDto);
+        User user = userDtoMapper.toUser(userDto);
 
         if (user.getId() == null) {
             String message = String.format("The user's id is null: %s", user);

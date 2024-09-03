@@ -1,15 +1,26 @@
 package ru.practicum.shareit.booking.dto;
 
+import lombok.RequiredArgsConstructor;
+import ru.practicum.shareit.booking.Booking;
+import ru.practicum.shareit.item.dto.ItemDtoMapper;
+import ru.practicum.shareit.user.dto.UserDtoMapper;
+
+import java.util.List;
+
 @Deprecated
-public class BookingDtoMapperMyImpl {} /*implements BookingDtoMapper {
+@RequiredArgsConstructor
+public class BookingDtoMapperMyImpl implements BookingDtoMapper {
+    private final UserDtoMapper userDtoMapper;
+    private final ItemDtoMapper itemDtoMapper;
+
     @Override
     public BookingDto toBookingDto(Booking booking) {
         BookingDto bookingDto = new BookingDto();
         bookingDto.setId(booking.getId());
-        bookingDto.setItem(ItemDtoMapper.toItemDto(booking.getItem()));
+        bookingDto.setItem(itemDtoMapper.toItemDto(booking.getItem()));
         bookingDto.setStart(booking.getStart());
         bookingDto.setEnd(booking.getEnd());
-        bookingDto.setBooker(UserDtoMapper.toUserDto(booking.getBooker()));
+        bookingDto.setBooker(userDtoMapper.toUserDto(booking.getBooker()));
         bookingDto.setStatus(booking.getStatus());
         return bookingDto;
     }
@@ -18,10 +29,10 @@ public class BookingDtoMapperMyImpl {} /*implements BookingDtoMapper {
     public Booking toBooking(BookingDto bookingDto) {
         Booking booking = new Booking();
         booking.setId(bookingDto.getId());
-        booking.setItem(ItemDtoMapper.toItem(bookingDto.getItem()));
+        booking.setItem(itemDtoMapper.toItem(bookingDto.getItem()));
         booking.setStart(bookingDto.getStart());
         booking.setEnd(bookingDto.getEnd());
-        booking.setBooker(UserDtoMapper.toUser(bookingDto.getBooker()));
+        booking.setBooker(userDtoMapper.toUser(bookingDto.getBooker()));
         booking.setStatus(bookingDto.getStatus());
         return booking;
     }
@@ -47,4 +58,4 @@ public class BookingDtoMapperMyImpl {} /*implements BookingDtoMapper {
                 .map(this::toBooking)
                 .toList();
     }
-}*/
+}

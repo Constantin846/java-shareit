@@ -1,25 +1,34 @@
 package ru.practicum.shareit.item.dto;
 
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.Named;
+import org.mapstruct.factory.Mappers;
 import ru.practicum.shareit.item.model.Comment;
+import ru.practicum.shareit.user.User;
 
-public class CommentDtoMapper {
-    private CommentDtoMapper() {
-    }
+import java.util.List;
+import java.util.Set;
 
-    public static CommentDto toCommentDto(Comment comment) {
-        CommentDto commentDto = new CommentDto();
-        commentDto.setId(comment.getId());
-        commentDto.setText(comment.getText());
-        commentDto.setItemId(comment.getItemId());
-        commentDto.setAuthorName(comment.getAuthor().getName());
-        return commentDto;
-    }
+@Mapper(componentModel = "spring")
+public interface CommentDtoMapper {
+    CommentDtoMapper MAPPER = Mappers.getMapper(CommentDtoMapper.class);
 
-    public static Comment toComment(CommentDto commentDto) {
-        Comment comment = new Comment();
-        comment.setId(commentDto.getId());
-        comment.setText(commentDto.getText());
-        comment.setItemId(commentDto.getItemId());
-        return comment;
+    @Mapping(target = "authorName", source = "author", qualifiedByName = "authorToAuthorName")
+    CommentDto toCommentDto(Comment comment);
+
+    Comment toComment(CommentDto commentDto);
+
+    @Mapping(target = "authorName", source = "author", qualifiedByName = "authorToAuthorName")
+    List<CommentDto> toCommentDto(List<Comment> comments);
+
+    List<Comment> toComment(List<CommentDto> comments);
+
+    @Mapping(target = "authorName", source = "author", qualifiedByName = "authorToAuthorName")
+    Set<CommentDto> toCommentDto(Set<Comment> comments);
+
+    @Named("authorToAuthorName")
+    default String authorToAuthorName(User author) {
+        return author.getName();
     }
 }

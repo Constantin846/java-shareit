@@ -27,7 +27,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -35,17 +34,19 @@ import java.util.stream.Collectors;
 @Transactional(readOnly = true)
 public class ItemServiceImpl implements ItemService {
     private static final String USER_WAS_NOT_FOUND_BY_ID = "User was not found by id: %d";
+    private final BookingDtoMapper bookingDtoMapper;
+    private final BookingJpaRepository bookingRepository;
+    private final CommentDtoMapper commentDtoMapper;
+    private final CommentJpaRepository commentRepository;
+    private final ItemDtoMapper itemDtoMapper;
     private final ItemJpaRepository itemRepository;
     private final UserJpaRepository userRepository;
-    private final CommentJpaRepository commentRepository;
-    private final BookingJpaRepository bookingRepository;
-    private final BookingDtoMapper bookingDtoMapper;
 
     @Override
     @Transactional
     public ItemDto create(ItemDto itemDto, long userId) {
         if (userRepository.existsById(userId)) {
-            Item item = ItemDtoMapper.toItem(itemDto);
+            Item item = itemDtoMapper.toItem(itemDto);
             item.setOwnerId(userId);
             Item createdItem = itemRepository.save(item);
             return findById(createdItem.getId());
@@ -59,9 +60,7 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public List<ItemDto> findItemsOfUser(long userId) {
         if (userRepository.existsById(userId)) {
-            return itemRepository.findByOwnerId(userId).stream()
-                    .map(ItemDtoMapper::toItemDto)
-                    .toList();
+            return itemDtoMapper.toItemDto(itemRepository.findByOwnerId(userId));
         } else {
             String message = String.format(USER_WAS_NOT_FOUND_BY_ID, userId);
             log.warn(message);
@@ -72,21 +71,20 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public ItemDto findById(long itemId) {
         Item item = getItemById(itemId);
-        return ItemDtoMapper.toItemDto(item);
+        return itemDtoMapper.toItemDto(item);
     }
 
     @Override
     public ItemBookingCommentDto findItemBookingCommentsById(long itemId) {
         Item item = getItemById(itemId);
-        ItemBookingCommentDto itemBCDto = new ItemBookingCommentDto(ItemDtoMapper.toItemDto(item));
-
+        ItemBookingCommentDto itemBCDto = new ItemBookingCommentDto(itemDtoMapper.toItemDto(item));
         return setComments(itemBCDto);
     }
 
     @Override
     @Transactional
     public ItemDto update(ItemDto itemDto, long userId) {
-        Item item = ItemDtoMapper.toItem(itemDto);
+        Item item = itemDtoMapper.toItem(itemDto);
 
         if (item.getId() == null) {
             String message = String.format("The item's id is null: %s", item);
@@ -139,15 +137,13 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public List<ItemDto> searchByText(String text) {
         List<Item> items = itemRepository.findAvailableByNameOrDescriptionLike(text);
-        return items.stream()
-                .map(ItemDtoMapper::toItemDto)
-                .toList();
+        return itemDtoMapper.toItemDto(items);
     }
 
     @Override
     @Transactional
     public CommentDto createComment(CommentDto commentDto, long userId) {
-        Comment comment = CommentDtoMapper.toComment(commentDto);
+        Comment comment = commentDtoMapper.toComment(commentDto);
         Optional<User> userOp = userRepository.findById(userId);
         User user = userOp.orElseThrow(() -> {
             String message = String.format("User was not found by id: %d", userId);
@@ -179,7 +175,7 @@ public class ItemServiceImpl implements ItemService {
             log.warn(message);
             return new NotFoundException(message);
         });
-        CommentDto newCommentDto = CommentDtoMapper.toCommentDto(savedComment);
+        CommentDto newCommentDto = commentDtoMapper.toCommentDto(savedComment);
         newCommentDto.setCreated(true);
         return newCommentDto;
     }
@@ -225,9 +221,7 @@ public class ItemServiceImpl implements ItemService {
 
     private ItemBookingCommentDto setComments(ItemBookingCommentDto itemBCDto) {
         Set<Comment> comments = commentRepository.findByItemId(itemBCDto.getId());
-        Set<CommentDto> commentDtos = comments.stream()
-                        .map(CommentDtoMapper::toCommentDto)
-                        .collect(Collectors.toSet());
+        Set<CommentDto> commentDtos = commentDtoMapper.toCommentDto(comments);
         itemBCDto.setComments(commentDtos);
         return itemBCDto;
     }
