@@ -14,11 +14,13 @@ import ru.practicum.shareit.item.dto.CommentDto;
 import ru.practicum.shareit.item.dto.CommentDtoMapper;
 import ru.practicum.shareit.item.dto.ItemBookingCommentDto;
 import ru.practicum.shareit.item.dto.ItemDto;
+import ru.practicum.shareit.item.dto.ItemDtoCreate;
 import ru.practicum.shareit.item.dto.ItemDtoMapper;
 import ru.practicum.shareit.item.model.Comment;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.item.repository.CommentJpaRepository;
 import ru.practicum.shareit.item.repository.ItemJpaRepository;
+import ru.practicum.shareit.request.repository.ItemRequestJpaRepository;
 import ru.practicum.shareit.user.User;
 import ru.practicum.shareit.user.repository.UserJpaRepository;
 
@@ -40,13 +42,23 @@ public class ItemServiceImpl implements ItemService {
     private final CommentJpaRepository commentRepository;
     private final ItemDtoMapper itemDtoMapper;
     private final ItemJpaRepository itemRepository;
+    private final ItemRequestJpaRepository itemRequestRepository;
     private final UserJpaRepository userRepository;
 
     @Override
     @Transactional
-    public ItemDto create(ItemDto itemDto, long userId) {
+    public ItemDto create(ItemDtoCreate itemDtoCreate, long userId) {
+        Long itemRequestId = itemDtoCreate.getRequestId();
+        if (itemRequestId != null) {
+            if (!itemRequestRepository.existsById(itemRequestId)) {
+                String message = String.format("Item request was not found by id: %d", itemRequestId);
+                log.warn(message);
+                throw new NotFoundException(message);
+            }
+        }
+
         if (userRepository.existsById(userId)) {
-            Item item = itemDtoMapper.toItem(itemDto);
+            Item item = itemDtoMapper.toItem(itemDtoCreate);
             item.setOwnerId(userId);
             Item createdItem = itemRepository.save(item);
             return findById(createdItem.getId());

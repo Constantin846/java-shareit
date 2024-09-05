@@ -19,6 +19,7 @@ import ru.practicum.shareit.exceptions.ValidationException;
 import ru.practicum.shareit.item.dto.CommentDto;
 import ru.practicum.shareit.item.dto.ItemBookingCommentDto;
 import ru.practicum.shareit.item.dto.ItemDto;
+import ru.practicum.shareit.item.dto.ItemDtoCreate;
 import ru.practicum.shareit.item.service.ItemService;
 
 import java.util.List;
@@ -38,10 +39,10 @@ public class ItemController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ItemDto create(@Valid @RequestBody ItemDto itemDto,
+    public ItemDto create(@Valid @RequestBody ItemDtoCreate itemDtoCreate,
                           @RequestHeader(X_SHARER_USER_ID) long userId) {
-        log.info("Request: create item: {}", itemDto);
-        return itemService.create(itemDto, userId);
+        log.info("Request: create item: {}", itemDtoCreate);
+        return itemService.create(itemDtoCreate, userId);
     }
 
     @GetMapping

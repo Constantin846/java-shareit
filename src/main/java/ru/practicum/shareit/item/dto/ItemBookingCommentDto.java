@@ -15,7 +15,9 @@ import java.util.Set;
 @NoArgsConstructor
 public class ItemBookingCommentDto extends ItemDto {
     BookingDto lastBooking;
+
     BookingDto nextBooking;
+
     Set<CommentDto> comments;
 
     public ItemBookingCommentDto(ItemDto itemDto) {
@@ -23,6 +25,5 @@ public class ItemBookingCommentDto extends ItemDto {
         this.name = itemDto.getName();
         this.description = itemDto.getDescription();
         this.available = itemDto.getAvailable();
-        this.ownerId = itemDto.getOwnerId();
     }
 }
