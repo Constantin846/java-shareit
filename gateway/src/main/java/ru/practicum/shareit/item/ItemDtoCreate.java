@@ -1,20 +1,13 @@
-package ru.practicum.shareit.user.dto;
+package ru.practicum.shareit.item;
 
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.FieldDefaults;
 
-/**
- * DTO class for user
- */
 @Data
-@EqualsAndHashCode(of = "id")
+@EqualsAndHashCode(callSuper = true)
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class UserDto {
-    Long id;
-
-    String email;
-
-    String name;
+public class ItemDtoCreate extends ItemDto {
+    Long requestId;
 }

@@ -89,7 +89,7 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public ItemBookingCommentDto findItemBookingCommentsById(long itemId) {
         Item item = getItemById(itemId);
-        ItemBookingCommentDto itemBCDto = new ItemBookingCommentDto(itemDtoMapper.toItemDto(item));
+        ItemBookingCommentDto itemBCDto = itemDtoMapper.toItemBookingCommentDto(item);
         return setComments(itemBCDto);
     }
 

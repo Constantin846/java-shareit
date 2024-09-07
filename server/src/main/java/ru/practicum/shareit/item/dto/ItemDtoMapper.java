@@ -12,11 +12,17 @@ public interface ItemDtoMapper {
 
     ItemDto toItemDto(Item item);
 
+    ItemBookingCommentDto toItemBookingCommentDto(Item item);
+
     Item toItem(ItemDto itemDto);
 
     Item toItem(ItemDtoCreate itemDtoCreate);
 
-    List<ItemDto> toItemDto(List<Item> items);
+    default List<ItemDto> toItemDto(List<Item> items) {
+        return items.stream()
+                .map(this::toItemDto)
+                .toList();
+    }
 
     List<Item> toItem(List<ItemDto> items);
 }

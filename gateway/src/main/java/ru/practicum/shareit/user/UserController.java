@@ -1,7 +1,11 @@
 package ru.practicum.shareit.user;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -10,59 +14,54 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import ru.practicum.shareit.exceptions.ValidationException;
-import ru.practicum.shareit.user.dto.UserDto;
-import ru.practicum.shareit.user.service.UserService;
-
-import java.util.List;
 
 /**
  * Controller for users
  */
-
 @Slf4j
 @RestController
 @RequestMapping(path = "/users")
 @RequiredArgsConstructor
+@Validated
 public class UserController {
-    private final UserService userService;
+    private final UserClient userClient;
     private static final String USER_ID = "user-id";
     private static final String PATH_USER_ID = "/{user-id}";
 
     @PostMapping
-    public UserDto create(@RequestBody UserDto userDto) {
+    public ResponseEntity<Object> create(@Valid @RequestBody UserDto userDto) {
         log.info("Request: create user: {}", userDto);
-        return userService.create(userDto);
+        return userClient.post(userDto);
     }
 
     @GetMapping
-    public List<UserDto> findAll() {
+    public ResponseEntity<Object> findAll() {
         log.info("Request: find all users");
-        return userService.findAll();
+        return userClient.findAll();
     }
 
     @GetMapping(PATH_USER_ID)
-    public UserDto findById(@PathVariable(USER_ID) long userId) {
+    public ResponseEntity<Object> findById(@PathVariable(USER_ID) long userId) {
         log.info("Request: find user by id: {}", userId);
-        return userService.findById(userId);
+        return userClient.findById(userId);
     }
 
     @PatchMapping(PATH_USER_ID)
-    public UserDto update(@PathVariable(USER_ID) long userId,
-                          @RequestBody UserDto userDto) {
-        userDto.setId(userId);
-        log.info("Request: update user: {}", userDto);
-        if (userDto.getId() == null) {
-            String message = String.format("The user's id is null: %s", userDto);
+    public ResponseEntity<Object> update(
+            @NotNull(message = "The user's id is null") @PathVariable(USER_ID) Long userId,
+            @RequestBody UserDto userDto) {
+        log.info("Request: update user {} with id={}", userDto, userId);
+        /*if (userId == null) {
+            String message = "The user's id is null";
             log.warn(message);
             throw new ValidationException(message);
-        }
-        return userService.update(userDto);
+        }*/
+        return userClient.patch(userId, userDto);
     }
 
     @DeleteMapping(PATH_USER_ID)
     public void delete(@PathVariable(USER_ID) long userId) {
         log.info("Request: delete user by id: {}", userId);
-        userService.delete(userId);
+        userClient.delete(userId);
     }
 }

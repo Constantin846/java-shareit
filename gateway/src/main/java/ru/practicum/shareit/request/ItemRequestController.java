@@ -1,8 +1,10 @@
 package ru.practicum.shareit.request;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -11,12 +13,6 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import ru.practicum.shareit.request.dto.ItemRequestDto;
-import ru.practicum.shareit.request.dto.ItemRequestDtoCreate;
-import ru.practicum.shareit.request.dto.ItemRequestDtoShort;
-import ru.practicum.shareit.request.service.ItemRequestService;
-
-import java.util.List;
 
 /**
  * TODO Sprint add-item-requests.
@@ -27,35 +23,35 @@ import java.util.List;
 @RequestMapping(path = "/requests")
 @RequiredArgsConstructor
 public class ItemRequestController {
-    private final ItemRequestService itemRequestService;
+    private final ItemRequestClient itemRequestClient;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ItemRequestDtoShort create(@RequestBody ItemRequestDtoCreate itemRequestDtoCreate,
-                                      @RequestHeader("X-Sharer-User-Id") long userId) {
+    public ResponseEntity<Object> create(@Valid @RequestBody ItemRequestDtoCreate itemRequestDtoCreate,
+                                         @RequestHeader("X-Sharer-User-Id") long userId) {
         itemRequestDtoCreate.setUserId(userId);
         log.info("Request: create item request: {}", itemRequestDtoCreate);
-        return itemRequestService.create(itemRequestDtoCreate);
+        return itemRequestClient.post(userId, itemRequestDtoCreate);
     }
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<ItemRequestDto> findByUserId(@RequestHeader("X-Sharer-User-Id") long userId) {
+    public ResponseEntity<Object> findByUserId(@RequestHeader("X-Sharer-User-Id") long userId) {
         log.info("Request: find item requests by user id: {}", userId);
-        return itemRequestService.findByUserId(userId);
+        return itemRequestClient.findByUserId(userId);
     }
 
     @GetMapping("/all")
     @ResponseStatus(HttpStatus.OK)
-    public List<ItemRequestDtoShort> findAll() {
+    public ResponseEntity<Object> findAll() {
         log.info("Request: find all item requests");
-        return itemRequestService.findAll();
+        return itemRequestClient.findAll();
     }
 
     @GetMapping("/{request-id}")
     @ResponseStatus(HttpStatus.OK)
-    public ItemRequestDto findById(@PathVariable("request-id") long itemRequestId) {
+    public ResponseEntity<Object> findById(@PathVariable("request-id") long itemRequestId) {
         log.info("Request: find all item requests");
-        return itemRequestService.findById(itemRequestId);
+        return itemRequestClient.findById(itemRequestId);
     }
 }
