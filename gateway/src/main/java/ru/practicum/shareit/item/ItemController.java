@@ -56,16 +56,16 @@ public class ItemController {
 
     @PatchMapping(PATH_ITEM_ID)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Object> update(@RequestBody ItemDto itemDto,
+    public ResponseEntity<Object> update(@Valid @RequestBody ItemDtoUpdate itemDtoUpdate,
                           @PathVariable(ITEM_ID) Long itemId,
                           @RequestHeader(X_SHARER_USER_ID) long userId) {
-        log.info("Request: update item={} by id={} ", itemDto, itemId);
+        log.info("Request: update item={} by id={} ", itemDtoUpdate, itemId);
         if (itemId == null) {
-            String message = String.format("The item's id is null: %s", itemDto);
+            String message = String.format("The item's id is null: %s", itemDtoUpdate);
             log.warn(message);
             throw new ValidationException(message);
         }
-        return itemClient.patch(itemId, userId, itemDto);
+        return itemClient.patch(itemId, userId, itemDtoUpdate);
     }
 
     @DeleteMapping(PATH_ITEM_ID)

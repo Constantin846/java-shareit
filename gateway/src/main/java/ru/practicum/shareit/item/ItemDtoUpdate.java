@@ -1,21 +1,18 @@
 package ru.practicum.shareit.item;
 
-import jakarta.validation.constraints.NotBlank;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
 import ru.practicum.shareit.validation.BooleanValue;
+import ru.practicum.shareit.validation.NotBlankOrNull;
 
-/**
- * DTO class for item
- */
 @Data
-@FieldDefaults(level = AccessLevel.PROTECTED)
-public class ItemDto {
-    @NotBlank(message = "Item's name must not be blank")
+@FieldDefaults(level = AccessLevel.PRIVATE)
+public class ItemDtoUpdate {
+    @NotBlankOrNull(message = "Item's name must be null or not be blank")
     String name;
 
-    @NotBlank(message = "Item's description must not be blank")
+    @NotBlankOrNull(message = "Item's description must be null or not be blank")
     String description;
 
     @BooleanValue(message = "Item's available must be true or false")
