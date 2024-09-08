@@ -25,7 +25,6 @@ import ru.practicum.shareit.user.User;
 import ru.practicum.shareit.user.repository.UserJpaRepository;
 
 import java.time.LocalDateTime;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -211,7 +210,7 @@ public class ItemServiceImpl implements ItemService {
         });
     }
 
-    private ItemBookingCommentDto setBookings(ItemBookingCommentDto itemBCDto) {
+    /*private ItemBookingCommentDto setBookings(ItemBookingCommentDto itemBCDto) {
         LinkedList<Booking> bookings = bookingRepository.findApprovedByItemIdSortStartAsc(itemBCDto.getId());
         LocalDateTime now = LocalDateTime.now();
 
@@ -229,7 +228,7 @@ public class ItemServiceImpl implements ItemService {
             }
         }
         return itemBCDto;
-    }
+    }*/
 
     private ItemBookingCommentDto setComments(ItemBookingCommentDto itemBCDto) {
         Set<Comment> comments = commentRepository.findByItemId(itemBCDto.getId());

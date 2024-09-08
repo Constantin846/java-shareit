@@ -23,6 +23,4 @@ public interface ItemDtoMapper {
                 .map(this::toItemDto)
                 .toList();
     }
-
-    List<Item> toItem(List<ItemDto> items);
 }

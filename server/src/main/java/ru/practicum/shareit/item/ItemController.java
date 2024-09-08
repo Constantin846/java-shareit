@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import ru.practicum.shareit.exceptions.ValidationException;
 import ru.practicum.shareit.item.dto.CommentDto;
 import ru.practicum.shareit.item.dto.ItemBookingCommentDto;
 import ru.practicum.shareit.item.dto.ItemDto;
@@ -65,11 +64,6 @@ public class ItemController {
                           @RequestHeader(X_SHARER_USER_ID) long userId) {
         itemDto.setId(itemId);
         log.info("Request: update item: {}", itemDto);
-        if (itemDto.getId() == null) { //todo
-            String message = String.format("The item's id is null: %s", itemDto);
-            log.warn(message);
-            throw new ValidationException(message);
-        }
         return itemService.update(itemDto, userId);
     }
 

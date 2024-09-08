@@ -17,6 +17,4 @@ public interface BookingDtoMapper {
     Booking toBooking(BookingDtoRequest bookingDto);
 
     List<BookingDto> toBookingDto(List<Booking> bookings);
-
-    List<Booking> toBooking(List<BookingDto> bookings);
 }

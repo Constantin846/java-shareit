@@ -2,8 +2,6 @@ package ru.practicum.shareit.exceptions;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.validation.FieldError;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -22,14 +20,14 @@ public class ErrorHandler {
         return Map.of(ERROR, e.getMessage());
     }
 
-    @ExceptionHandler
+    @ExceptionHandler({NotAccessException.class})
     //@ResponseStatus(HttpStatus.NOT_ACCEPTABLE)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public Map<String, String> handlerNotAccessException(final NotAccessException e) {
         return Map.of(ERROR, e.getMessage());
     }
 
-    @ExceptionHandler
+    @ExceptionHandler({ConflictException.class})
     //@ResponseStatus(HttpStatus.CONFLICT)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public Map<String, String> handlerConflictException(final ConflictException e) {
@@ -40,15 +38,6 @@ public class ErrorHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public Map<String, String> handlerValidationException(final RuntimeException e) {
         return Map.of(ERROR, e.getMessage());
-    }
-
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public Map<String, String> handlerValidException(final MethodArgumentNotValidException e) {
-        FieldError fieldError = e.getFieldError();
-        String message = fieldError != null ? fieldError.getDefaultMessage() : INTERNAL_SERVER_ERROR;
-        message = message != null ? message : INTERNAL_SERVER_ERROR;
-        return Map.of(ERROR, message);
     }
 
     @ExceptionHandler
