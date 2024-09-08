@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import ru.practicum.shareit.exceptions.ValidationException;
 
 /**
  * Controller for users
@@ -52,11 +51,6 @@ public class UserController {
             @NotNull(message = "The user's id is null") @PathVariable(USER_ID) Long userId,
             @RequestBody UserDtoUpdate userDtoUpdate) {
         log.info("Request: update user {} with id={}", userDtoUpdate, userId);
-        if (userId == null) {
-            String message = "The user's id is null";
-            log.warn(message);
-            throw new ValidationException(message);
-        }
         return userClient.patch(userId, userDtoUpdate);
     }
 

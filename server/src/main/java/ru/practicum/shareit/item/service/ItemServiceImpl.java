@@ -104,6 +104,12 @@ public class ItemServiceImpl implements ItemService {
             throw new ValidationException(message);
         }
 
+        if (!userRepository.existsById(userId)) {
+            String message = String.format(USER_WAS_NOT_FOUND_BY_ID, userId);
+            log.warn(message);
+            throw new NotFoundException(message);
+        }
+
         Item oldItem = getItemById(item.getId());
         if (oldItem.getOwnerId() != userId) {
             String message = String.format("Not access to item: %s", item);
@@ -119,14 +125,8 @@ public class ItemServiceImpl implements ItemService {
         }
         oldItem.setAvailable(item.isAvailable());
 
-        if (userRepository.existsById(userId)) {
-            Item newItem = itemRepository.save(oldItem);
-            return findById(newItem.getId());
-        } else {
-            String message = String.format(USER_WAS_NOT_FOUND_BY_ID, userId);
-            log.warn(message);
-            throw new NotFoundException(message);
-        }
+        Item newItem = itemRepository.save(oldItem);
+        return findById(newItem.getId());
     }
 
     @Override

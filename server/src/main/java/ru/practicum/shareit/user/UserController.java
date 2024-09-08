@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import ru.practicum.shareit.exceptions.ValidationException;
 import ru.practicum.shareit.user.dto.UserDto;
 import ru.practicum.shareit.user.service.UserService;
 
@@ -52,11 +51,6 @@ public class UserController {
                           @RequestBody UserDto userDto) {
         userDto.setId(userId);
         log.info("Request: update user: {}", userDto);
-        if (userDto.getId() == null) {
-            String message = String.format("The user's id is null: %s", userDto);
-            log.warn(message);
-            throw new ValidationException(message);
-        }
         return userService.update(userDto);
     }
 

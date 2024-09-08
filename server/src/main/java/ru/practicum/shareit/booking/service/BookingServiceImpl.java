@@ -40,7 +40,7 @@ public class BookingServiceImpl implements BookingService {
     public BookingDto create(BookingDtoRequest bookingDto, long bookerId) {
         Booking booking = bookingDtoMapper.toBooking(bookingDto);
 
-        if (booking.getStart().equals(booking.getEnd())) {
+        if (!booking.getStart().isAfter(booking.getEnd())) {
             String message = String.format("Start and end of booking must not be equals: %s", booking);
             log.warn(message);
             throw new ValidationException(message);

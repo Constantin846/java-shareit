@@ -65,7 +65,7 @@ public class ItemController {
                           @RequestHeader(X_SHARER_USER_ID) long userId) {
         itemDto.setId(itemId);
         log.info("Request: update item: {}", itemDto);
-        if (itemDto.getId() == null) {
+        if (itemDto.getId() == null) { //todo
             String message = String.format("The item's id is null: %s", itemDto);
             log.warn(message);
             throw new ValidationException(message);

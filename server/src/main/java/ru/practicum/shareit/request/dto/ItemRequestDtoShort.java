@@ -15,8 +15,6 @@ public class ItemRequestDtoShort {
 
     String description;
 
-    //LocalDateTime date; todo
-
     LocalDateTime created;
 
     Long userId;

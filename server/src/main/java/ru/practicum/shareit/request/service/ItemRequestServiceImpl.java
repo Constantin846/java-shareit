@@ -40,14 +40,14 @@ public class ItemRequestServiceImpl implements ItemRequestService {
 
     @Override
     public List<ItemRequestDto> findByUserId(long userId) {
-        Sort sort = Sort.by("created").ascending();
+        Sort sort = Sort.by("created").descending();
         List<ItemRequest> itemRequests = itemRequestRepository.findByUserId(userId, sort);
         return itemRequestDtoMapper.toItemRequestDto(itemRequests);
     }
 
     @Override
     public List<ItemRequestDtoShort> findAll() {
-        Sort sort = Sort.by("created").ascending();
+        Sort sort = Sort.by("created").descending();
         List<ItemRequest> itemRequests = itemRequestRepository.findAll(sort);
         return itemRequestDtoMapper.toItemRequestDtoShort(itemRequests);
     }
