@@ -70,9 +70,9 @@ class BookingControllerTest {
         BookingStatus status = BookingStatus.APPROVED;
         BookingDto bookingDto = new BookingDto();
         bookingDto.setStatus(status);
-        when(bookingService.setStatus(bookingId, status , userId)).thenReturn(bookingDto);
+        when(bookingService.setStatus(bookingId, status, userId)).thenReturn(bookingDto);
 
-        String result = mockMvc.perform(patch( String.format("/bookings/{id}?approved=%s", approved), bookingId)
+        String result = mockMvc.perform(patch(String.format("/bookings/{id}?approved=%s", approved), bookingId)
                         .header("X-Sharer-User-Id", userId))
                 .andExpect(status().isOk())
                 .andReturn()
@@ -91,9 +91,9 @@ class BookingControllerTest {
         BookingStatus status = BookingStatus.REJECTED;
         BookingDto bookingDto = new BookingDto();
         bookingDto.setStatus(status);
-        when(bookingService.setStatus(bookingId, status , userId)).thenReturn(bookingDto);
+        when(bookingService.setStatus(bookingId, status, userId)).thenReturn(bookingDto);
 
-        String result = mockMvc.perform(patch( String.format("/bookings/{id}?approved=%s", approved), bookingId)
+        String result = mockMvc.perform(patch(String.format("/bookings/{id}?approved=%s", approved), bookingId)
                         .header("X-Sharer-User-Id", userId))
                 .andExpect(status().isOk())
                 .andReturn()
@@ -110,7 +110,7 @@ class BookingControllerTest {
         long bookingId = 1L;
         String approved = "NotBoolean";
 
-        mockMvc.perform(patch( String.format("/bookings/{id}?approved=%s", approved), bookingId)
+        mockMvc.perform(patch(String.format("/bookings/{id}?approved=%s", approved), bookingId)
                         .header("X-Sharer-User-Id", userId))
                 .andExpect(status().isInternalServerError());
     }
@@ -149,7 +149,7 @@ class BookingControllerTest {
         long userId = 1L;
         BookingState bookingState = BookingState.ALL;
         List<BookingDto> expectedList = List.of(new BookingDto());
-        when(bookingService.findByOwner(bookingState , userId)).thenReturn(expectedList);
+        when(bookingService.findByOwner(bookingState, userId)).thenReturn(expectedList);
 
         String result = mockMvc.perform(get("/bookings/owner")
                         .header("X-Sharer-User-Id", userId))
@@ -168,7 +168,7 @@ class BookingControllerTest {
         long userId = 1L;
         BookingState bookingState = BookingState.ALL;
         List<BookingDto> expectedList = List.of();
-        when(bookingService.findByOwner(bookingState , userId)).thenReturn(expectedList);
+        when(bookingService.findByOwner(bookingState, userId)).thenReturn(expectedList);
 
         mockMvc.perform(get("/bookings/owner")
                         .header("X-Sharer-User-Id", userId))
