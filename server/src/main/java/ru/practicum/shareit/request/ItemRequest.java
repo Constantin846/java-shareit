@@ -38,16 +38,13 @@ public class ItemRequest {
     @Column(name = "description", nullable = false)
     String description;
 
-    @Column(name = "date"/*, nullable = false*/)
-    LocalDateTime date;
-
     @Column(name = "create_date", nullable = false)
     LocalDateTime created;
 
     @Column(name = "user_id", nullable = false)
     Long userId;
 
-    @OneToMany(fetch = FetchType.LAZY/*, mappedBy = "requestId"*/)
+    @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "request_id")
     Set<Item> items = new HashSet<>();
 }
