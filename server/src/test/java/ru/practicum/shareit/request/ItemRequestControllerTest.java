@@ -22,6 +22,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static ru.practicum.shareit.util.StringManager.X_SHARER_USER_ID;
 
 @WebMvcTest
 class ItemRequestControllerTest {
@@ -50,7 +51,7 @@ class ItemRequestControllerTest {
         when(itemRequestService.create(itemRequestDtoCreate)).thenReturn(itemRequestDtoShort);
 
         String result = mockMvc.perform(post("/requests")
-                        .header("X-Sharer-User-Id", userId)
+                        .header(X_SHARER_USER_ID, userId)
                         .contentType("application/json")
                         .content(objectMapper.writeValueAsString(itemRequestDtoCreate)))
                 .andExpect(status().isCreated())
@@ -67,7 +68,7 @@ class ItemRequestControllerTest {
         long userId = 1L;
 
         mockMvc.perform(get("/requests")
-                        .header("X-Sharer-User-Id", userId))
+                        .header(X_SHARER_USER_ID, userId))
                 .andDo(print())
                 .andExpect(status().isOk());
 
@@ -80,7 +81,7 @@ class ItemRequestControllerTest {
         long userId = 1L;
 
         mockMvc.perform(get("/requests/all")
-                        .header("X-Sharer-User-Id", userId))
+                        .header(X_SHARER_USER_ID, userId))
                 .andDo(print())
                 .andExpect(status().isOk());
 

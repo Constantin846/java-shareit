@@ -26,6 +26,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static ru.practicum.shareit.util.StringManager.X_SHARER_USER_ID;
 
 @WebMvcTest
 class ItemControllerTest {
@@ -51,7 +52,7 @@ class ItemControllerTest {
         when(itemService.create(itemDtoCreate, userId)).thenReturn(itemDto);
 
         String result = mockMvc.perform(post("/items")
-                        .header("X-Sharer-User-Id", userId)
+                        .header(X_SHARER_USER_ID, userId)
                         .contentType("application/json")
                         .content(objectMapper.writeValueAsString(itemDtoCreate)))
                 .andExpect(status().isCreated())
@@ -68,7 +69,7 @@ class ItemControllerTest {
         long userId = 1L;
 
         mockMvc.perform(get("/items")
-                        .header("X-Sharer-User-Id", userId))
+                        .header(X_SHARER_USER_ID, userId))
                 .andDo(print())
                 .andExpect(status().isOk());
 
@@ -96,7 +97,7 @@ class ItemControllerTest {
         when(itemService.update(itemDto, userId)).thenReturn(itemDto);
 
         String result = mockMvc.perform(patch("/items/{id}", itemId)
-                        .header("X-Sharer-User-Id", userId)
+                        .header(X_SHARER_USER_ID, userId)
                         .contentType("application/json")
                         .content(objectMapper.writeValueAsString(itemDto)))
                 .andExpect(status().isOk())
@@ -113,7 +114,7 @@ class ItemControllerTest {
         long itemId = 1L;
         long userId = 1L;
         mockMvc.perform(MockMvcRequestBuilders.delete("/items/{id}", itemId)
-                .header("X-Sharer-User-Id", userId))
+                .header(X_SHARER_USER_ID, userId))
                 .andDo(print())
                 .andExpect(status().isOk());
 
@@ -156,7 +157,7 @@ class ItemControllerTest {
         when(itemService.createComment(commentDto, userId)).thenReturn(commentDto);
 
         String result = mockMvc.perform(post("/items/{id}/comment", itemId)
-                        .header("X-Sharer-User-Id", userId)
+                        .header(X_SHARER_USER_ID, userId)
                         .contentType("application/json")
                         .content(objectMapper.writeValueAsString(commentDto)))
                 .andExpect(status().isCreated())

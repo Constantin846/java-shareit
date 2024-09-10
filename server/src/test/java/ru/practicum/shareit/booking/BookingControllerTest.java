@@ -24,6 +24,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static ru.practicum.shareit.util.StringManager.X_SHARER_USER_ID;
 
 @WebMvcTest
 class BookingControllerTest {
@@ -50,7 +51,7 @@ class BookingControllerTest {
         when(bookingService.create(bookingDtoRequest, userId)).thenReturn(bookingDto);
 
         String result = mockMvc.perform(post("/bookings")
-                        .header("X-Sharer-User-Id", userId)
+                        .header(X_SHARER_USER_ID, userId)
                         .contentType("application/json")
                         .content(objectMapper.writeValueAsString(bookingDtoRequest)))
                 .andExpect(status().isCreated())
@@ -73,7 +74,7 @@ class BookingControllerTest {
         when(bookingService.setStatus(bookingId, status, userId)).thenReturn(bookingDto);
 
         String result = mockMvc.perform(patch(String.format("/bookings/{id}?approved=%s", approved), bookingId)
-                        .header("X-Sharer-User-Id", userId))
+                        .header(X_SHARER_USER_ID, userId))
                 .andExpect(status().isOk())
                 .andReturn()
                 .getResponse()
@@ -94,7 +95,7 @@ class BookingControllerTest {
         when(bookingService.setStatus(bookingId, status, userId)).thenReturn(bookingDto);
 
         String result = mockMvc.perform(patch(String.format("/bookings/{id}?approved=%s", approved), bookingId)
-                        .header("X-Sharer-User-Id", userId))
+                        .header(X_SHARER_USER_ID, userId))
                 .andExpect(status().isOk())
                 .andReturn()
                 .getResponse()
@@ -111,7 +112,7 @@ class BookingControllerTest {
         String approved = "NotBoolean";
 
         mockMvc.perform(patch(String.format("/bookings/{id}?approved=%s", approved), bookingId)
-                        .header("X-Sharer-User-Id", userId))
+                        .header(X_SHARER_USER_ID, userId))
                 .andExpect(status().isInternalServerError());
     }
 
@@ -122,7 +123,7 @@ class BookingControllerTest {
         long bookingId = 1L;
 
         mockMvc.perform(get("/bookings/{id}", bookingId)
-                        .header("X-Sharer-User-Id", userId))
+                        .header(X_SHARER_USER_ID, userId))
                 .andDo(print())
                 .andExpect(status().isOk());
 
@@ -136,7 +137,7 @@ class BookingControllerTest {
         BookingState bookingState = BookingState.ALL;
 
         mockMvc.perform(get("/bookings")
-                        .header("X-Sharer-User-Id", userId))
+                        .header(X_SHARER_USER_ID, userId))
                 .andDo(print())
                 .andExpect(status().isOk());
 
@@ -152,7 +153,7 @@ class BookingControllerTest {
         when(bookingService.findByOwner(bookingState, userId)).thenReturn(expectedList);
 
         String result = mockMvc.perform(get("/bookings/owner")
-                        .header("X-Sharer-User-Id", userId))
+                        .header(X_SHARER_USER_ID, userId))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andReturn()
@@ -171,7 +172,7 @@ class BookingControllerTest {
         when(bookingService.findByOwner(bookingState, userId)).thenReturn(expectedList);
 
         mockMvc.perform(get("/bookings/owner")
-                        .header("X-Sharer-User-Id", userId))
+                        .header(X_SHARER_USER_ID, userId))
                 .andDo(print())
                 .andExpect(status().isNotFound());
     }
