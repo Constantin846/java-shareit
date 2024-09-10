@@ -18,6 +18,8 @@ import ru.practicum.shareit.request.service.ItemRequestService;
 
 import java.util.List;
 
+import static ru.practicum.shareit.util.StringManager.X_SHARER_USER_ID;
+
 /**
  * TODO Sprint add-item-requests.
  */
@@ -32,7 +34,7 @@ public class ItemRequestController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ItemRequestDtoShort create(@RequestBody ItemRequestDtoCreate itemRequestDtoCreate,
-                                      @RequestHeader("X-Sharer-User-Id") long userId) {
+                                      @RequestHeader(X_SHARER_USER_ID) long userId) {
         itemRequestDtoCreate.setUserId(userId);
         log.info("Request: create item request: {}", itemRequestDtoCreate);
         return itemRequestService.create(itemRequestDtoCreate);
@@ -40,7 +42,7 @@ public class ItemRequestController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<ItemRequestDto> findByUserId(@RequestHeader("X-Sharer-User-Id") long userId) {
+    public List<ItemRequestDto> findByUserId(@RequestHeader(X_SHARER_USER_ID) long userId) {
         log.info("Request: find item requests by user id: {}", userId);
         return itemRequestService.findByUserId(userId);
     }

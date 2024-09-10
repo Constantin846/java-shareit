@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -17,6 +18,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import ru.practicum.shareit.exceptions.ValidationException;
+import ru.practicum.shareit.validation.Create;
+import ru.practicum.shareit.validation.Update;
+
+import static ru.practicum.shareit.util.StringManager.X_SHARER_USER_ID;
 
 /**
  * Controller for items
@@ -28,13 +33,12 @@ import ru.practicum.shareit.exceptions.ValidationException;
 @RequiredArgsConstructor
 public class ItemController {
     private final ItemClient itemClient;
-    private static final String X_SHARER_USER_ID = "X-Sharer-User-Id";
     private static final String ITEM_ID = "item-id";
     private static final String PATH_ITEM_ID = "/{item-id}";
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Object> create(@Valid @RequestBody ItemDtoCreate itemDtoCreate,
+    public ResponseEntity<Object> create(@Validated(Create.class) @RequestBody ItemDtoCreate itemDtoCreate,
                                          @RequestHeader(X_SHARER_USER_ID) long userId) {
         log.info("Request: create item: {}", itemDtoCreate);
         return itemClient.post(userId, itemDtoCreate);
@@ -56,16 +60,16 @@ public class ItemController {
 
     @PatchMapping(PATH_ITEM_ID)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Object> update(@Valid @RequestBody ItemDtoUpdate itemDtoUpdate,
+    public ResponseEntity<Object> update(@Validated(Update.class) @RequestBody ItemDto itemDto,
                           @PathVariable(ITEM_ID) Long itemId,
                           @RequestHeader(X_SHARER_USER_ID) long userId) {
-        log.info("Request: update item={} by id={} ", itemDtoUpdate, itemId);
+        log.info("Request: update item={} by id={} ", itemDto, itemId);
         if (itemId == null) {
-            String message = String.format("The item's id is null: %s", itemDtoUpdate);
+            String message = String.format("The item's id is null: %s", itemDto);
             log.warn(message);
             throw new ValidationException(message);
         }
-        return itemClient.patch(itemId, userId, itemDtoUpdate);
+        return itemClient.patch(itemId, userId, itemDto);
     }
 
     @DeleteMapping(PATH_ITEM_ID)

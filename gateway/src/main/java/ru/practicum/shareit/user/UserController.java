@@ -1,6 +1,5 @@
 package ru.practicum.shareit.user;
 
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,6 +13,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import ru.practicum.shareit.validation.Create;
+import ru.practicum.shareit.validation.Update;
 
 /**
  * Controller for users
@@ -29,7 +30,7 @@ public class UserController {
     private static final String PATH_USER_ID = "/{user-id}";
 
     @PostMapping
-    public ResponseEntity<Object> create(@Valid @RequestBody UserDto userDto) {
+    public ResponseEntity<Object> create(@Validated(Create.class) @RequestBody UserDto userDto) {
         log.info("Request: create user: {}", userDto);
         return userClient.post(userDto);
     }
@@ -49,9 +50,9 @@ public class UserController {
     @PatchMapping(PATH_USER_ID)
     public ResponseEntity<Object> update(
             @NotNull(message = "The user's id is null") @PathVariable(USER_ID) Long userId,
-            @RequestBody UserDtoUpdate userDtoUpdate) {
-        log.info("Request: update user {} with id={}", userDtoUpdate, userId);
-        return userClient.patch(userId, userDtoUpdate);
+            @Validated(Update.class) @RequestBody UserDto userDto) {
+        log.info("Request: update user {} with id={}", userDto, userId);
+        return userClient.patch(userId, userDto);
     }
 
     @DeleteMapping(PATH_USER_ID)

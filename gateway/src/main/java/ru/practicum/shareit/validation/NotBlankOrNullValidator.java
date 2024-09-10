@@ -3,9 +3,9 @@ package ru.practicum.shareit.validation;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 
-public class NotBlankOrNullValidator implements ConstraintValidator<BooleanValue, String> {
+public class NotBlankOrNullValidator implements ConstraintValidator<NotBlankOrNull, String> {
     @Override
-    public void initialize(BooleanValue constraintAnnotation) {
+    public void initialize(NotBlankOrNull constraintAnnotation) {
         ConstraintValidator.super.initialize(constraintAnnotation);
     }
 

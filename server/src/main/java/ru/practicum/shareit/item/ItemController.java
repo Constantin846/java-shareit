@@ -22,6 +22,8 @@ import ru.practicum.shareit.item.service.ItemService;
 
 import java.util.List;
 
+import static ru.practicum.shareit.util.StringManager.X_SHARER_USER_ID;
+
 /**
  * Controller for items
  */
@@ -31,7 +33,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ItemController {
     private final ItemService itemService;
-    private static final String X_SHARER_USER_ID = "X-Sharer-User-Id";
     private static final String ITEM_ID = "item-id";
     private static final String PATH_ITEM_ID = "/{item-id}";
 

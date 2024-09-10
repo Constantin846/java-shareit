@@ -21,6 +21,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import ru.practicum.shareit.booking.dto.BookingDtoRequest;
 import ru.practicum.shareit.booking.dto.BookingState;
 
+import static ru.practicum.shareit.util.StringManager.X_SHARER_USER_ID;
+
 @Controller
 @RequestMapping(path = "/bookings")
 @RequiredArgsConstructor
@@ -28,7 +30,6 @@ import ru.practicum.shareit.booking.dto.BookingState;
 @Validated
 public class BookingController {
 	private final BookingClient bookingClient;
-	private static final String X_SHARER_USER_ID = "X-Sharer-User-Id";
 	private static final String BOOKING_ID = "booking-id";
 	private static final String PATH_BOOKING_ID = "/{booking-id}";
 

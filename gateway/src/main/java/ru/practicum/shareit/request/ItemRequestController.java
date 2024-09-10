@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import static ru.practicum.shareit.util.StringManager.X_SHARER_USER_ID;
+
 /**
  * TODO Sprint add-item-requests.
  */
@@ -28,7 +30,7 @@ public class ItemRequestController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<Object> create(@Valid @RequestBody ItemRequestDtoCreate itemRequestDtoCreate,
-                                         @RequestHeader("X-Sharer-User-Id") long userId) {
+                                         @RequestHeader(X_SHARER_USER_ID) long userId) {
         itemRequestDtoCreate.setUserId(userId);
         log.info("Request: create item request: {}", itemRequestDtoCreate);
         return itemRequestClient.post(userId, itemRequestDtoCreate);
@@ -36,7 +38,7 @@ public class ItemRequestController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Object> findByUserId(@RequestHeader("X-Sharer-User-Id") long userId) {
+    public ResponseEntity<Object> findByUserId(@RequestHeader(X_SHARER_USER_ID) long userId) {
         log.info("Request: find item requests by user id: {}", userId);
         return itemRequestClient.findByUserId(userId);
     }

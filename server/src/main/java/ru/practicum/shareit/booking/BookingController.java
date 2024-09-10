@@ -20,6 +20,8 @@ import ru.practicum.shareit.exceptions.NotFoundException;
 
 import java.util.List;
 
+import static ru.practicum.shareit.util.StringManager.X_SHARER_USER_ID;
+
 /**
  * TODO Sprint add-bookings.
  */
@@ -30,7 +32,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class BookingController {
     private final BookingService bookingService;
-    private static final String X_SHARER_USER_ID = "X-Sharer-User-Id";
     private static final String BOOKING_ID = "booking-id";
     private static final String PATH_BOOKING_ID = "/{booking-id}";
 
